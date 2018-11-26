@@ -3,7 +3,7 @@
     <section class="intro">
       <h1>Get the latest tech news!</h1>
     </section>
-    <PostList :posts="loadedPosts" />
+    <PostList :posts="loadedPosts"/>
   </div>
 </template>
 
@@ -14,26 +14,43 @@ export default {
   components: {
     PostList
   },
-  data() {
-    return {
-      loadedPosts: [
-        {
-          id: '1',
-          title: "First Post",
-          previewText: "This is our first post!",
-          thumbnail:
-            "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-        },
-          {
-          id: '2',
-          title: "Second Post",
-          previewText: "This is our second post!",
-          thumbnail:
-            "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-        }
-      ]
-    };
+  asyncData(context) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          loadedPosts: [
+            {
+              id: "1",
+              title: "First Post",
+              previewText: "This is our first post!",
+              thumbnail:
+                "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+            },
+            {
+              id: "2",
+              title: "Second Post",
+              previewText: "This is our second post!",
+              thumbnail:
+                "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+            }
+          ]
+        });
+      }, 1000);
+    })
+    .then(data => {
+      return data
+    })
+    .catch(e => {
+      context.error(new Error());
+    });
+    console.log(context);
+    console.log('Async data executed');
   }
+  // data() {
+  //   return {
+  //     loadedPosts: []
+  //   };
+  // },
 };
 </script>
 
