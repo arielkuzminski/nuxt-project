@@ -25,6 +25,7 @@ export default {
         })
         .then(result => {
           console.log(result);
+          this.$router.push('/admin');
         })
         .catch(error => {
           console.log(error);
