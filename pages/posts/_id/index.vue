@@ -20,7 +20,7 @@
 export default {
   asyncData(context, callback) {
     setTimeout(() => {
-      callback(new Error(), {
+      callback(null, {
         loadedPost: {
           id: "1",
           title: "First Post (ID: " + context.params.id + ")",
