@@ -20,7 +20,7 @@
 import axios from 'axios';
 export default {
   asyncData(context) {
-    return axios.get('https://nuxt-blog-c487f.firebaseio.com/posts/' + context.params.id + '.json')
+    return axios.get(process.env.baseUrl + '/posts/' + context.params.id + '.json')
       .then((result) => {
         return {
           loadedPost: result.data
@@ -30,6 +30,9 @@ export default {
         console.log(error);
         context.error(error);
       })
+  },
+  head: {
+    title: 'A Blog Post'
   }
 };
 </script>

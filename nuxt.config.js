@@ -22,7 +22,11 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#fa923f' },
+  loadingIndicator: {
+    name: 'circle',
+    color: '#fa923f'
+  },
 
   /*
   ** Global CSS
@@ -52,5 +56,8 @@ module.exports = {
     extend(config, ctx) {
 
     }
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'https://nuxt-blog-c487f.firebaseio.com'
   }
 }
