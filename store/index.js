@@ -1,5 +1,4 @@
 import Vuex from "vuex";
-import axios from "axios";
 
 const createStore = () => {
   return new Vuex.Store({
@@ -22,12 +21,12 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit(vuexContext, context) {
-        return axios
-          .get(process.env.baseUrl + "/posts.json")
+        return context.app.$axios
+          .$get("/posts.json")
           .then(res => {
             const postArray = [];
-            for (const key in res.data) {
-              postArray.push({ ...res.data[key], id: key });
+            for (const key in res) {
+              postArray.push({ ...res[key], id: key });
             }
             vuexContext.commit("setPosts", postArray);
           })
@@ -38,15 +37,15 @@ const createStore = () => {
           ...postData,
           updatedDate: new Date()
         };
-        return axios
-          .post(
-            process.env.baseUrl + "/posts.json",
+        return this.$axios
+          .$post(
+            "/posts.json",
             createdPost
           )
           .then(res => {
             vuexContext.commit("addPost", {
               ...createdPost,
-              id: res.data.name
+              id: res.name
             });
           })
           .catch(error => {
@@ -54,9 +53,9 @@ const createStore = () => {
           });
       },
       editPost(vuexContext, editedPost) {
-        return axios
-          .put(
-            `${process.env.baseUrl}/posts/${
+        return this.$axios
+          .$put(
+            `/posts/${
               editedPost.id
             }.json`,
             editedPost
