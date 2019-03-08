@@ -51,7 +51,7 @@ module.exports = {
   ],
 
   axios: {
-    baseURL: process.env.BASE_URL || 'https://nuxt-blog-c487f.firebaseio.com'
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-c487f.firebaseio.com',
   },
 
   /*
@@ -64,6 +64,9 @@ module.exports = {
     extend(config, ctx) {
 
     }
+  },
+  env: {
+    fbAPIKey: 'AIzaSyD83X92pJYBZaz12LwsnAJp44dx0oaVDy0',
   },
   transition: {
     name: 'fade',
