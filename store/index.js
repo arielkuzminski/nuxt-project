@@ -43,7 +43,7 @@ const createStore = () => {
         };
         return this.$axios
           .$post(
-            "/posts.json",
+            `/posts.json?auth=${vuexContext.state.token}`,
             createdPost
           )
           .then(res => {
@@ -61,7 +61,7 @@ const createStore = () => {
           .$put(
             `/posts/${
               editedPost.id
-            }.json`,
+            }.json?auth=${vuexContext.state.token}`,
             editedPost
           )
           .then(res => {
