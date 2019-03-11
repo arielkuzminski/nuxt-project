@@ -1,5 +1,5 @@
 import Vuex from "vuex";
-import Cookie from 'js-cookie';
+import Cookie from "js-cookie";
 
 const createStore = () => {
   return new Vuex.Store({
@@ -46,10 +46,7 @@ const createStore = () => {
           updatedDate: new Date()
         };
         return this.$axios
-          .$post(
-            `/posts.json?auth=${vuexContext.state.token}`,
-            createdPost
-          )
+          .$post(`/posts.json?auth=${vuexContext.state.token}`, createdPost)
           .then(res => {
             vuexContext.commit("addPost", {
               ...createdPost,
@@ -63,13 +60,11 @@ const createStore = () => {
       editPost(vuexContext, editedPost) {
         return this.$axios
           .$put(
-            `/posts/${
-              editedPost.id
-            }.json?auth=${vuexContext.state.token}`,
+            `/posts/${editedPost.id}.json?auth=${vuexContext.state.token}`,
             editedPost
           )
           .then(res => {
-            vuexContext.commit('editPost', editedPost);
+            vuexContext.commit("editPost", editedPost);
           })
           .catch(err => {
             console.log(err);
@@ -79,40 +74,54 @@ const createStore = () => {
         vuexContext.commit("setPosts", posts);
       },
       authenticateUser(vuexContext, authData) {
-        let authUrl = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' +
-        process.env.fbAPIKey;
+        let authUrl =
+          "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" +
+          process.env.fbAPIKey;
         if (!authData.isLogin) {
-            return this.$axios.$post(authUrl, {
+          return this.$axios
+            .$post(authUrl, {
               email: authData.email,
               password: authData.password,
-              returnSecureToken: true,
-            }
-          ).then(result => {
-            vuexContext.commit('setToken', result.idToken);
-            localStorage.setItem('token', result.idToken);
-            this.$router.push('/admin');
-          }).catch(e => {
-            console.log(e);
-          });
+              returnSecureToken: true
+            })
+            .then(result => {
+              vuexContext.commit("setToken", result.idToken);
+              localStorage.setItem("token", result.idToken);
+              this.$router.push("/admin");
+            })
+            .catch(e => {
+              console.log(e);
+            });
         } else {
-          authUrl = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' +
+          authUrl =
+            "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" +
             process.env.fbAPIKey;
-          return this.$axios.$post(authUrl, {
+          return this.$axios
+            .$post(authUrl, {
               email: authData.email,
               password: authData.password,
-              returnSecureToken: true,
-            }
-          ).then(result => {
-            vuexContext.commit('setToken', result.idToken);
-            localStorage.setItem('token', result.idToken);
-            localStorage.setItem('tokenExpiration', new Date().getTime() + +result.expiresIn * 1000);
-            Cookie.set('jwt', result.idToken);
-            Cookie.set('expirationDate', new Date().getTime() + +result.expiresIn * 1000);
-            this.$router.push('/admin');
-            return this.$axios.$post('http://localhost:3000/api/track-data', { data: 'Authenticated'})
-          }).catch(e => {
-            console.log(e);
-          });
+              returnSecureToken: true
+            })
+            .then(result => {
+              vuexContext.commit("setToken", result.idToken);
+              localStorage.setItem("token", result.idToken);
+              localStorage.setItem(
+                "tokenExpiration",
+                new Date().getTime() + +result.expiresIn * 1000
+              );
+              Cookie.set("jwt", result.idToken);
+              Cookie.set(
+                "expirationDate",
+                new Date().getTime() + +result.expiresIn * 1000
+              );
+              this.$router.push("/admin");
+              return this.$axios.$post("http://localhost:3000/api/track-data", {
+                data: "Authenticated"
+              });
+            })
+            .catch(e => {
+              console.log(e);
+            });
         }
       },
       initAuth(vuexContext, req) {
@@ -123,35 +132,34 @@ const createStore = () => {
             return;
           }
           const jwtCookie = req.headers.cookie
-            .split(';')
-            .find(c => c.trim().startsWith('jwt='));
+            .split(";")
+            .find(c => c.trim().startsWith("jwt="));
           if (!jwtCookie) {
             return;
           }
-          token = jwtCookie.split('=')[1];
+          token = jwtCookie.split("=")[1];
           expirationDate = req.headers.cookie
-            .split(';')
-            .find(c => c.trim().startsWith('expirationDate='))
-            .split('=')[1];
-
+            .split(";")
+            .find(c => c.trim().startsWith("expirationDate="))
+            .split("=")[1];
         } else {
-          token = localStorage.getItem('token');
-          expirationDate = localStorage.getItem('tokenExpiration');
-          }
-          if (new Date().getTime() > +expirationDate || !token) {
-            console.log('No token or invalid token!');
-            vuexContext.dispatch('logout');
-            return;
-          }
-          vuexContext.commit('setToken', token);
+          token = localStorage.getItem("token");
+          expirationDate = localStorage.getItem("tokenExpiration");
+        }
+        if (new Date().getTime() > +expirationDate || !token) {
+          console.log("No token or invalid token!");
+          vuexContext.dispatch("logout");
+          return;
+        }
+        vuexContext.commit("setToken", token);
       },
       logout(vuexContext) {
-        vuexContext.commit('clearToken');
-        Cookie.remove('jwt');
-        Cookie.remove('expirationDate');
+        vuexContext.commit("clearToken");
+        Cookie.remove("jwt");
+        Cookie.remove("expirationDate");
         if (process.client) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('tokenExpiration');
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenExpiration");
         }
       }
     },
