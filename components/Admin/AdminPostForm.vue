@@ -6,7 +6,8 @@
     <AppControlInput control-type="textarea" v-model="editedPost.previewText">Preview</AppControlInput>
     <AppControlInput control-type="textarea" v-model="editedPost.content">Content</AppControlInput>
     <AppButton type="submit">Save</AppButton>
-    <AppButton type="button" style="margin-left: 10px" btn-style="cancel" @click="onCancel">Cancel</AppButton>
+    <AppButton type="button" style="margin-left: 10px" @click="onCancel">Cancel</AppButton>
+    <AppButton type="button" style="margin-left: 10px" btn-style="cancel" @click="onDelete">Delete</AppButton>
   </form>
 </template>
 
@@ -46,6 +47,13 @@ export default {
     onCancel() {
       // Navigate back
       this.$router.push("/admin");
+    },
+    onDelete() {
+      console.log(this.editedPost.id);
+      this.$store.dispatch('deletePost', this.editedPost.id)
+          .then(() => {
+            this.$router.push("/admin");
+          })
     }
   }
 };

@@ -70,6 +70,18 @@ const createStore = () => {
             console.log(err);
           });
       },
+      deletePost(vuexContext, deletedPostId) {
+        return this.$axios
+          .$delete(
+            `/posts/${deletedPostId}.json?auth=${vuexContext.state.token}`
+          )
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
       setPosts(vuexContext, posts) {
         vuexContext.commit("setPosts", posts);
       },
