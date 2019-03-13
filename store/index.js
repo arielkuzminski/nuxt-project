@@ -20,6 +20,12 @@ const createStore = () => {
         );
         state.loadedPosts[postIndex] = editPost;
       },
+      deletePost(state, deletedPostId) {
+        const filteredPosts = state.loadedPosts.filter((post) => {
+          return post.id !== deletedPostId;
+        });
+        state.loadedPosts = filteredPosts;
+      },
       setToken(state, token) {
         state.token = token;
       },
@@ -77,6 +83,7 @@ const createStore = () => {
           )
           .then(res => {
             console.log(res);
+            vuexContext.commit('deletePost', deletedPostId);
           })
           .catch(err => {
             console.log(err);
