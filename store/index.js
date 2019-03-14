@@ -77,17 +77,15 @@ const createStore = () => {
           });
       },
       deletePost(vuexContext, deletedPostId) {
-        return this.$axios
-          .$delete(
-            `/posts/${deletedPostId}.json?auth=${vuexContext.state.token}`
-          )
-          .then(res => {
-            console.log(res);
-            vuexContext.commit('deletePost', deletedPostId);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        return new Promise((resolve, reject) => {
+          this.$axios.$delete(`/posts/${deletedPostId}.jsona?auth=${vuexContext.state.token}`)
+          .then(response => {
+              resolve(response);
+            })
+            .catch(error => {
+              reject(error);
+            })
+        });
       },
       setPosts(vuexContext, posts) {
         vuexContext.commit("setPosts", posts);
