@@ -49,14 +49,11 @@ export default {
       this.$router.push("/admin");
     },
     onDelete() {
-      console.log(this.editedPost.id);
       this.$store.dispatch('deletePost', this.editedPost.id)
           .then(() => {
-            console.log('onDelete success');
             this.$router.push("/admin");
           })
           .catch((e) => {
-            console.error('onDelete error');
             console.error(e);
           })
     }
