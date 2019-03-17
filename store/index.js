@@ -80,6 +80,7 @@ const createStore = () => {
         return new Promise((resolve, reject) => {
           this.$axios.$delete(`/posts/${deletedPostId}.json?auth=${vuexContext.state.token}`)
           .then(response => {
+              vuexContext.commit('deletePost', deletedPostId);
               resolve(response);
             })
             .catch(error => {
