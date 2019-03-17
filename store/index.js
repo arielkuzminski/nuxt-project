@@ -78,7 +78,7 @@ const createStore = () => {
       },
       deletePost(vuexContext, deletedPostId) {
         return new Promise((resolve, reject) => {
-          this.$axios.$delete(`/posts/${deletedPostId}.jsona?auth=${vuexContext.state.token}`)
+          this.$axios.$delete(`/posts/${deletedPostId}.json?auth=${vuexContext.state.token}`)
           .then(response => {
               resolve(response);
             })
